@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizley/views/signup.dart';
 import 'package:quizley/views/widgets/widgets.dart';
 
 class SignIn extends StatefulWidget {
@@ -79,17 +80,27 @@ class _SignInState extends State<SignIn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Dont have an account?",
-                        style: TextStyle(
-                          fontSize: 15.5,
-                        )),
                     Text(
-                      "Sign up",
+                      "Dont have an account?",
                       style: TextStyle(
                         fontSize: 15.5,
-                        decoration: TextDecoration.underline,
                       ),
-                    )
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUp()),
+                        );
+                      },
+                      child: Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontSize: 15.5,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
