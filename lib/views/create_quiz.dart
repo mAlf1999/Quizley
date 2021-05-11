@@ -33,10 +33,11 @@ class _CreateQuizState extends State<CreateQuiz> {
       await databaseService.addQuizData(quizMap, quizId).then((value) {
         setState(() {
           _isLoading = false;
-           Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (context) => AddQuestion()
-              quizId
-           ));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AddQuestion()
+                  // quizId
+                  ));
         });
       });
     }
@@ -53,11 +54,7 @@ class _CreateQuizState extends State<CreateQuiz> {
         brightness: Brightness.light,
       ),
       body: _isLoading
-          ? Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
+          ? Container(child: Center(child: CircularProgressIndicator()))
           : Form(
               key: _formKey,
               child: Container(
@@ -100,7 +97,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                       },
                     ),
                     Spacer(),
-                   Container(
+                    Container(
                       width: MediaQuery.of(context).size.width - 48,
                       height: 50,
                       padding: EdgeInsets.symmetric(vertical: 15),
@@ -111,7 +108,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                       ),
                       child: Text(
                         "Create Quiz",
-                        style: TextStyle( 
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                         ),
