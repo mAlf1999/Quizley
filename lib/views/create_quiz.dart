@@ -14,7 +14,7 @@ class _CreateQuizState extends State<CreateQuiz> {
   String quizImgUrl, quizTitle, quizDescription, quizId;
   DatabaseService databaseService = new DatabaseService();
 
-  bool _isLoading;
+  bool _isLoading = false;
 
   createQuizOnline() async {
     if (_formKey.currentState.validate()) {
@@ -35,9 +35,9 @@ class _CreateQuizState extends State<CreateQuiz> {
           _isLoading = false;
           Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => AddQuestion()
-                  // quizId
-                  ));
+              MaterialPageRoute(
+                builder: (context) => AddQuestion(),
+              ));
         });
       });
     }
@@ -70,9 +70,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                         quizImgUrl = val;
                       },
                     ),
-                    SizedBox(
-                      height: 6,
-                    ),
+                    SizedBox(height: 6),
                     TextFormField(
                       validator: (val) =>
                           val.isEmpty ? "Enter Quiz Title" : null,
@@ -83,9 +81,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                         quizTitle = val;
                       },
                     ),
-                    SizedBox(
-                      height: 6,
-                    ),
+                    SizedBox(height: 6),
                     TextFormField(
                       validator: (val) =>
                           val.isEmpty ? "Enter Quiz Description" : null,
@@ -97,20 +93,25 @@ class _CreateQuizState extends State<CreateQuiz> {
                       },
                     ),
                     Spacer(),
-                    Container(
-                      width: MediaQuery.of(context).size.width - 48,
-                      height: 50,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Text(
-                        "Create Quiz",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                    GestureDetector(
+                      onTap: () {
+                        createQuizOnline();
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 48,
+                        height: 50,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Text(
+                          "Create Quiz",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
