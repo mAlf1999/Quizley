@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:quizley/services/database.dart';
+import 'addquestion.dart';
 import 'widgets/widgets.dart';
 
 class CreateQuiz extends StatefulWidget {
@@ -32,9 +33,10 @@ class _CreateQuizState extends State<CreateQuiz> {
       await databaseService.addQuizData(quizMap, quizId).then((value) {
         setState(() {
           _isLoading = false;
-          // Navigator.pushReplacement(context, MaterialPageRoute(
-          //    builder: (context) => //AddQuestion()
-          // ));
+           Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => AddQuestion()
+              quizId
+           ));
         });
       });
     }
@@ -98,7 +100,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                       },
                     ),
                     Spacer(),
-                    Container(
+                   Container(
                       width: MediaQuery.of(context).size.width - 48,
                       height: 50,
                       padding: EdgeInsets.symmetric(vertical: 15),
@@ -109,7 +111,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                       ),
                       child: Text(
                         "Create Quiz",
-                        style: TextStyle(
+                        style: TextStyle( 
                           color: Colors.white,
                           fontSize: 16,
                         ),
