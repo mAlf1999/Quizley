@@ -1,3 +1,5 @@
+// ignore: avoid_web_libraries_in_flutter
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -20,7 +22,16 @@ class DatabaseService {
       print(e);
     });
   }
-  getQuizData() async{
+
+  getQuizData() async {
     return await FirebaseFirestore.instance.collection("Quiz").snapshots();
+  }
+
+  getQuestionData(String quizId) async {
+    return await FirebaseFirestore.instance
+        .collection("Quiz")
+        .doc(quizId)
+        .collection("QNA")
+        .get();
   }
 }
