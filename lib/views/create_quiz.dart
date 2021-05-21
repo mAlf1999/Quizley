@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:quizley/services/database.dart';
 import 'addquestion.dart';
 import 'widgets/widgets.dart';
+import 'package:random_string/random_string.dart';
 
 class CreateQuiz extends StatefulWidget {
   @override
@@ -17,11 +18,11 @@ class _CreateQuizState extends State<CreateQuiz> {
   bool _isLoading = false;
 
   createQuizOnline() async {
+    quizId = randomAlphaNumeric(16);
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
-      // quizId = randomAlphaNumeric(16);
 
       Map<String, String> quizMap = {
         "quizId": quizId,
