@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quizley/views/home.dart';
 import '../services/database.dart';
 import 'widgets/widgets.dart';
 
 class AddQuestion extends StatefulWidget {
   final String quizId;
+
   AddQuestion({this.quizId});
 
   @override
@@ -11,27 +13,29 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
-  final formKey = GlobalKey<FormState>();
+  DatabaseService databaseService = new DatabaseService();
+  final _formKey = GlobalKey<FormState>();
   String question, option1, option2, option3, option4;
   bool _isLoading = false;
 
-  DatabaseService databaseService = new DatabaseService();
-
-  uploadQustionData() async {
-    if (formKey.currentState.validate()) {
+  uploadQuestionData() async {
+    if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
 
       Map<String, String> questionMap = {
-        "qestion": question,
+        "question": question,
         "option1": option1,
         "option2": option2,
         "option3": option3,
         "option4": option4
       };
 
-      await databaseService.addQuestionData(questionMap, widget.quizId);
+      await databaseService.addQuestionData(
+        questionMap,
+        widget.quizId,
+      );
       setState(() {
         _isLoading = false;
       });
@@ -54,7 +58,7 @@ class _AddQuestionState extends State<AddQuestion> {
               child: CircularProgressIndicator(),
             ))
           : Form(
-              key: formKey,
+              key: _formKey,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Column(children: [
@@ -110,7 +114,31 @@ class _AddQuestionState extends State<AddQuestion> {
                   Spacer(),
                   GestureDetector(
                     onTap: () {
-                      uploadQustionData();
+                      uploadQuestionData();
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 25,
+                      height: 50,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Text(
+                        "Add question",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 60),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Home()));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width - 25,
@@ -123,26 +151,8 @@ class _AddQuestionState extends State<AddQuestion> {
                       ),
                       child: Text(
                         "Submit",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 60),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 25,
-                    height: 50,
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Text(
-                      "Add Question",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                   SizedBox(height: 60),
@@ -152,5 +162,3 @@ class _AddQuestionState extends State<AddQuestion> {
     );
   }
 }
-
-class _formKey {}
