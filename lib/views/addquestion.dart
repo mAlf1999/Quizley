@@ -114,7 +114,7 @@ class _AddQuestionState extends State<AddQuestion> {
                     },
                   ),
                   Spacer(),
-                  git GestureDetector(
+                  GestureDetector(
                     onTap: () {
                       uploadQuestionData();
                     },
