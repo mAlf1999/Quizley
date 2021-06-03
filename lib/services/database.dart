@@ -13,6 +13,8 @@ class DatabaseService {
   }
 
   Future<void> addQuestionData(Map questionData, String quizId) async {
+    print('questions $questionData');
+    print('quiz $quizId');
     await FirebaseFirestore.instance
         .collection("Quiz")
         .doc(quizId)

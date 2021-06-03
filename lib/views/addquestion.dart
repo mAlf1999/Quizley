@@ -62,14 +62,16 @@ class _AddQuestionState extends State<AddQuestion> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Column(children: [
-                  TextFormField(
-                    validator: (val) => val.isEmpty ? "Enter Question" : null,
-                    decoration: InputDecoration(
-                      hintText: "Question",
+                  Flexible(
+                    child: TextFormField(
+                      validator: (val) => val.isEmpty ? "Enter Question" : null,
+                      decoration: InputDecoration(
+                        hintText: "Question",
+                      ),
+                      onChanged: (val) {
+                        question = val;
+                      },
                     ),
-                    onChanged: (val) {
-                      question = val;
-                    },
                   ),
                   SizedBox(height: 6),
                   TextFormField(
