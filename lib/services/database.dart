@@ -12,16 +12,41 @@ class DatabaseService {
     }
   }
 
-  Future<void> addQuestionData(Map questionData, String quizId) async {
+  Future<void> addQuestionData(
+      Map questionData, String quizId, String questionId) async {
     print('questions $questionData');
     print('quiz $quizId');
     await FirebaseFirestore.instance
         .collection("Quiz")
         .doc(quizId)
         .collection("QNA")
-        .add(questionData)
+        .doc(questionId)
+        .set(questionData)
         .catchError((e) {
       print(e);
+    });
+  }
+
+  Future<void> deleteQuizData(String quizId) async {
+    await FirebaseFirestore.instance
+        .collection("Quiz")
+        .doc(quizId)
+        .delete()
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> updateQuestionData(
+      Map questionData, String quizId, String questionId) async {
+    await FirebaseFirestore.instance
+        .collection("Quiz")
+        .doc(quizId)
+        .collection("QNA")
+        .doc(questionId)
+        .update(questionData)
+        .catchError((e) {
+      print(e.toString());
     });
   }
 
@@ -35,5 +60,17 @@ class DatabaseService {
         .doc(quizId)
         .collection("QNA")
         .get();
+  }
+
+  Future<void> deleteQuestionData(String quizId, String questionId) async {
+    return await FirebaseFirestore.instance
+        .collection("Quiz")
+        .doc(quizId)
+        .collection("QNA")
+        .doc(questionId)
+        .delete()
+        .catchError((e) {
+      print(e.toString());
+    });
   }
 }

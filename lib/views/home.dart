@@ -1,6 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:quizley/helper/functions.dart';
+import 'package:quizley/views/signin.dart';
+import 'package:quizley/services/auth.dart';
 import 'package:quizley/services/database.dart';
 import 'package:quizley/views/create_quiz.dart';
 import 'package:quizley/views/play_quiz.dart';
@@ -15,7 +17,19 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Stream quizStream;
+  AuthService _authService = new AuthService();
   DatabaseService databaseService = new DatabaseService();
+
+  bool _isLoading = true;
+
+  _signOut() async {
+    await _authService.signOut().then((value) {
+      HelperFunctions.saveUserTypeDetails(userType: "");
+      HelperFunctions().saveUserLoggedInDetails(isLoggedin: false);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignIn()));
+    });
+  }
 
   Widget quizList() {
     return Container(
@@ -24,7 +38,13 @@ class _HomeState extends State<Home> {
         stream: quizStream,
         builder: (context, snapshot) {
           return snapshot.data == null
-              ? Container()
+              ? Container(
+                  child: Center(
+                      child: Text(
+                    "click '+' to add quiz",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  )),
+                )
               : ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
@@ -60,6 +80,16 @@ class _HomeState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           title: appBar(context),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  _signOut();
+                },
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.black87,
+                ))
+          ],
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           brightness: Brightness.light,
@@ -80,6 +110,7 @@ class QuizTile extends StatelessWidget {
   final String title;
   final String desc;
   final String quizId;
+
   QuizTile({
     @required this.imgUrl,
     @required this.title,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizley/services/auth.dart';
+import 'package:quizley/views/quiz_list.dart';
 import 'package:quizley/views/signup.dart';
 import 'package:quizley/views/widgets/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,8 +29,13 @@ class _SignInState extends State<SignIn> {
           setState(() {
             isLoading = false;
           });
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Home()));
+          if (email == 'admin@gmail.com') {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => QuizList()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          }
         }
       });
     }

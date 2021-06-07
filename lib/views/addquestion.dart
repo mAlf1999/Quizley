@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizley/views/home.dart';
+import 'package:quizley/views/quiz_list.dart';
 import '../services/database.dart';
 import 'widgets/widgets.dart';
+import 'package:random_string/random_string.dart';
 
 class AddQuestion extends StatefulWidget {
   final String quizId;
@@ -15,7 +18,7 @@ class AddQuestion extends StatefulWidget {
 class _AddQuestionState extends State<AddQuestion> {
   DatabaseService databaseService = new DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  String question, option1, option2, option3, option4;
+  String question, option1, option2, option3, option4, questionId;
   bool _isLoading = false;
 
   uploadQuestionData() async {
@@ -23,22 +26,42 @@ class _AddQuestionState extends State<AddQuestion> {
       setState(() {
         _isLoading = true;
       });
-
+      questionId = randomAlphaNumeric(16);
       Map<String, String> questionMap = {
         "question": question,
         "option1": option1,
         "option2": option2,
         "option3": option3,
-        "option4": option4
+        "option4": option4,
+        "questionId": questionId
       };
 
-      await databaseService.addQuestionData(
-        questionMap,
-        widget.quizId,
-      );
-      setState(() {
-        _isLoading = false;
-      });
+      await databaseService
+          .addQuestionData(
+            questionMap,
+            widget.quizId,
+            questionId,
+          )
+          .then((value) => {
+                setState(() {
+                  _isLoading = false;
+                })
+              });
+    }
+  }
+
+  final _auth = FirebaseAuth.instance;
+  String userEmail;
+  dynamic user;
+  void getCurrentUserEmail() async {
+    user = await _auth.currentUser;
+    userEmail = user.email;
+    if (userEmail == 'admin@gmail.com') {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => QuizList()));
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
     }
   }
 
@@ -139,8 +162,7 @@ class _AddQuestionState extends State<AddQuestion> {
                   SizedBox(height: 60),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                      getCurrentUserEmail();
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width - 25,
